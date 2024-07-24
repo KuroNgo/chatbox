@@ -1,90 +1,33 @@
-# Chatbox Project
+# chatbox
 
-Welcome to the Chatbox project! This is a chat application built with Golang using the Echo framework, structured to follow clean architecture principles and ensure modular design.
+This template should help get you started developing with Vue 3 in Vite.
 
-## Table of Contents
+## Recommended IDE Setup
 
-- [Project Structure](#project-structure)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Features](#features)
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
-## Project Structure
+## Type Support for `.vue` Imports in TS
 
-```plaintext
-├───api
-│   ├───controller
-│   │   ├───log        # Handles logging
-│   │   ├───message    # Manages messages
-│   │   ├───room       # Manages chat rooms
-│   │   └───user       # Manages user operations
-│   ├───middlewares    # Custom middlewares
-│   └───router         # Routes definition
-├───assets             # Static assets
-├───bootstrap          # Initialization and setup
-├───cmd                # Command line scripts
-├───config             # Configuration files
-├───domain             # Core business logic
-├───infrastructure     # Infrastructure-related code
-├───pkg
-│   ├───cache          # Caching utilities
-│   ├───cloudinary     # Cloudinary integration
-│   ├───const          # Constants
-│   ├───cron           # Scheduled tasks
-│   ├───helper         # Helper functions
-│   ├───jwt            # JWT authentication
-│   ├───mail           # Email services
-│   ├───oauth2         # OAuth2 services
-│   ├───review         # Review and rating system
-│   └───websocket      # WebSocket implementation
-├───repository         # Data access layer
-├───templates          # HTML templates
-└───usecase            # Application use cases
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+
+## Customize configuration
+
+See [Vite Configuration Reference](https://vitejs.dev/config/).
+
+## Project Setup
+
+```sh
+npm install
 ```
 
-## Installation
+### Compile and Hot-Reload for Development
 
-To get started with the Chatbox project, follow these steps:
+```sh
+npm run dev
+```
 
-### Clone the repository:
+### Type-Check, Compile and Minify for Production
 
-- sh
-- Copy code
-- git clone https://github.com/yourusername/chatbox.git
-
-### Navigate to the project directory:
-
-- sh
-- Copy code
-- cd chatbox
-
-### Install the dependencies:
-
-sh
-Copy code
-go mod download
-
-### Set up your environment variables as needed. You can use the provided .env.example file as a template:
-
-- sh
-- Copy code
-- cp .env.example .env
-
-## Run the application:
-
-- sh
-- Copy code
-- go run main.go
-
-## Usage
-Once the application is running, you can access the chatbox through your web browser at http://localhost:8080.
-
-## Features
-- User Management: Register, login, and manage user accounts.
-- Chat Rooms: Create and join chat rooms.
-- Messaging: Real-time messaging with WebSocket.
-- Logging: Detailed logging of activities.
-- Email Services: Integration with email services for notifications.
-- OAuth2: Support for OAuth2 authentication.
-- Cloudinary: Integration with Cloudinary for media uploads.
-
+```sh
+npm run build
+```
