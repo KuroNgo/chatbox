@@ -1,6 +1,7 @@
 package message_controller
 
 import (
+	constant "chatbox/pkg/const"
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"net/http"
@@ -12,7 +13,7 @@ func (m *MessageController) DeleteOne() echo.HandlerFunc {
 		if currentUser == nil {
 			return c.JSON(http.StatusUnauthorized, echo.Map{
 				"status":  "fail",
-				"message": "You are not login!",
+				"message": constant.Unauthorized,
 			})
 		}
 
@@ -21,7 +22,7 @@ func (m *MessageController) DeleteOne() echo.HandlerFunc {
 		if err != nil || user == nil {
 			return c.JSON(http.StatusUnauthorized, echo.Map{
 				"status":  "fail",
-				"message": "You are not authorize in perform this action",
+				"message": constant.Unauthenticated,
 			})
 		}
 
@@ -30,7 +31,7 @@ func (m *MessageController) DeleteOne() echo.HandlerFunc {
 		err = m.MessageUseCase.DeleteOne(ctx, id)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, echo.Map{
-				"message": "Internal Server Error:" + err.Error(),
+				"message": constant.ServerInternalError + err.Error(),
 			})
 		}
 

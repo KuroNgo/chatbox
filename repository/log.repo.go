@@ -2,6 +2,8 @@ package repository
 
 import (
 	"chatbox/domain"
+	"chatbox/pkg/cache"
+	"chatbox/pkg/helper"
 	"context"
 	"errors"
 	"go.mongodb.org/mongo-driver/bson"
@@ -24,6 +26,10 @@ func NewActivityRepository(db *mongo.Database, collectionActivity string, collec
 		collectionAdmin:    collectionAdmin,
 	}
 }
+
+var (
+	loggingCache = cache.NewTTL[string, []domain.Logging]()
+)
 
 func (l loggingRepository) CreateOne(ctx context.Context, log domain.Logging) error {
 	collectionActivity := l.database.Collection(l.collectionActivity)
@@ -61,6 +67,19 @@ func (l loggingRepository) CreateOne(ctx context.Context, log domain.Logging) er
 
 func (l loggingRepository) FetchMany(ctx context.Context, page string) ([]domain.Logging, error) {
 	errCh := make(chan error, 1)
+	loggingCh := make(chan []domain.Logging, 1)
+	go func() {
+		data, found := loggingCache.Get(page)
+		if found {
+			loggingCh <- data
+			return
+		}
+	}()
+
+	loggingData := <-loggingCh
+	if !helper.IsZeroValue(loggingData) {
+		return loggingData, nil
+	}
 
 	collection := l.database.Collection(l.collectionActivity)
 	collectionAdmin := l.database.Collection(l.collectionAdmin)
@@ -115,6 +134,7 @@ func (l loggingRepository) FetchMany(ctx context.Context, page string) ([]domain
 	}
 	wg.Wait()
 
+	loggingCache.Set(page, activities, timeTL)
 	select {
 	case err = <-errCh:
 		return nil, err

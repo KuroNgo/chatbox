@@ -13,6 +13,13 @@ type roomRepository struct {
 	collectionRoom string
 }
 
+func NewRoomRepository(db *mongo.Database, collectionRoom string) domain.IRoomRepository {
+	return &roomRepository{
+		database:       db,
+		collectionRoom: collectionRoom,
+	}
+}
+
 func (r roomRepository) GetByName(ctx context.Context, userID primitive.ObjectID, name string) (*domain.Room, error) {
 	collectionRoom := r.database.Collection(r.collectionRoom)
 
@@ -24,13 +31,6 @@ func (r roomRepository) GetByName(ctx context.Context, userID primitive.ObjectID
 	}
 
 	return room, nil
-}
-
-func NewRoomRepository(db *mongo.Database, collectionRoom string) domain.IRoomRepository {
-	return &roomRepository{
-		database:       db,
-		collectionRoom: collectionRoom,
-	}
 }
 
 func (r roomRepository) CreateRoom(ctx context.Context, room domain.Room) error {
