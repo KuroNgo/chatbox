@@ -2,6 +2,7 @@ package router
 
 import (
 	log_controller "chatbox/api/controller/log"
+	"chatbox/api/middlewares"
 	"chatbox/bootstrap"
 	"chatbox/domain"
 	"chatbox/repository"
@@ -22,5 +23,6 @@ func ActivityRoute(env *bootstrap.Database, timeout time.Duration, db *mongo.Dat
 	}
 
 	router := group.Group("/activity")
+	router.Use(middlewares.DeserializeUser())
 	router.GET("/fetch", activity.FetchManyActivity())
 }

@@ -2,6 +2,7 @@ package router
 
 import (
 	room_controller "chatbox/api/controller/room"
+	"chatbox/api/middlewares"
 	"chatbox/bootstrap"
 	"chatbox/domain"
 	"chatbox/repository"
@@ -21,7 +22,8 @@ func RoomRouter(env *bootstrap.Database, timeout time.Duration, db *mongo.Databa
 		Database:    env,
 	}
 
-	router := group.Group("v1/room")
+	router := group.Group("/v1/room")
+	router.Use(middlewares.DeserializeUser())
 	router.GET("/fetch", room.FetchManyRoom())
 	router.GET("/1/fetch", room.FetchOneRoom())
 	router.GET("/fetch/name", room.FetchOneByName())

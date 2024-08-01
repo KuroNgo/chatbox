@@ -21,7 +21,8 @@ func MessageRouter(env *bootstrap.Database, timeout time.Duration, db *mongo.Dat
 		Database:       env,
 	}
 
-	router := group.Group("v1/message")
+	router := group.Group("/v1/message")
+	//router.Use(middlewares.DeserializeUser())
 	router.GET("/ws", message.Setup())
 	router.GET("/fetch", message.FetchMany())
 	router.DELETE("/delete", message.DeleteOne())

@@ -10,7 +10,7 @@ import (
 )
 
 func SetUp(env *bootstrap.Database, timeout time.Duration, db *mongo.Database, echo *echo.Echo) {
-	publicRouter := echo.Group("/api")
+	publicRouter := echo.Group("/api/user")
 
 	// Middleware
 	publicRouter.Use(
