@@ -69,10 +69,30 @@ func (u *UserController) SignUp() echo.HandlerFunc {
 			// thực hiện đăng ký người dùng
 			err = u.UserUseCase.Create(ctx, newUser)
 			if err != nil {
-				return c.JSON(http.StatusBadRequest, echo.Map{
-					"status":  "error",
-					"message": err.Error()},
-				)
+				if newUser.Verified == false {
+					user, errE := u.UserUseCase.GetByEmail(ctx, newUser.Email)
+					if errE != nil {
+						return c.JSON(http.StatusBadRequest, echo.Map{
+							"status":  "error",
+							"message": err.Error()},
+						)
+					}
+
+					if errDel := u.UserUseCase.Delete(ctx, user.ID.Hex()); errDel != nil {
+						return c.JSON(http.StatusBadRequest, echo.Map{
+							"status":  "error",
+							"message": err.Error()},
+						)
+					}
+				}
+
+				errCreate := u.UserUseCase.Create(ctx, newUser)
+				if errCreate != nil {
+					return c.JSON(http.StatusBadRequest, echo.Map{
+						"status":  "error",
+						"message": err.Error()},
+					)
+				}
 			}
 
 			var code string
@@ -102,7 +122,7 @@ func (u *UserController) SignUp() echo.HandlerFunc {
 			emailData := mailk.EmailData{
 				Code:      code,
 				FirstName: newUser.FullName,
-				Subject:   "Your account verification code",
+				Subject:   "Your account verification code " + code,
 			}
 
 			err = mailk.SendEmail(&emailData, newUser.Email, "sign_up.html")

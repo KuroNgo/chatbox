@@ -2,6 +2,7 @@ package repository
 
 import (
 	"chatbox/domain"
+	"chatbox/pkg/cache"
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -20,6 +21,12 @@ func NewRoomRepository(db *mongo.Database, collectionRoom string) domain.IRoomRe
 	}
 }
 
+var (
+	roomPointerCache = cache.NewTTL[string, *domain.Room]()
+	roomsCache       = cache.NewTTL[string, []domain.Room]()
+	roomCache        = cache.NewTTL[string, domain.Room]()
+)
+
 func (r roomRepository) GetByName(ctx context.Context, userID primitive.ObjectID, name string) (*domain.Room, error) {
 	collectionRoom := r.database.Collection(r.collectionRoom)
 
@@ -31,12 +38,6 @@ func (r roomRepository) GetByName(ctx context.Context, userID primitive.ObjectID
 	}
 
 	return room, nil
-}
-
-func (r roomRepository) CreateRoom(ctx context.Context, room domain.Room) error {
-	collectionRoom := r.database.Collection(r.collectionRoom)
-	_, err := collectionRoom.InsertOne(ctx, room)
-	return err
 }
 
 func (r roomRepository) FetchManyRoom(ctx context.Context, userID primitive.ObjectID) ([]domain.Room, error) {
@@ -94,6 +95,12 @@ func (r roomRepository) FetchOneByName(ctx context.Context, userID primitive.Obj
 	}
 
 	return room, nil
+}
+
+func (r roomRepository) CreateRoom(ctx context.Context, room domain.Room) error {
+	collectionRoom := r.database.Collection(r.collectionRoom)
+	_, err := collectionRoom.InsertOne(ctx, room)
+	return err
 }
 
 func (r roomRepository) UpdateRoom(ctx context.Context, userID primitive.ObjectID, room *domain.Room) error {

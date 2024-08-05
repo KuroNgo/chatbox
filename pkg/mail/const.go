@@ -1,21 +1,22 @@
 package mailk
 
 const (
-	BCCAdmin3 = "hoaiphong01012002@mail.com"
+	BCCAdmin3 = "hoaiphong01012002@gmail.com"
+	Mailer1   = "hoaiphong01012002@gmail.com"
 
-	Mailer1 = "hoaiphong01012002@mail.com"
-
-	Password1 = "01012002Phong"
+	Password1 = "qkwhceisfqaoldls"
 	Test      = "2011423@dlu.edu.vn"
 	Admin     = "admin"
 	User      = "user"
 	Staff     = "staff"
 
-	From = "From"
-	To   = "To"
-	Bcc  = "Bcc"
+	From    = "From"
+	To      = "To"
+	Bcc     = "Bcc"
+	Subject = "Subject"
 
-	Body      = "text/plain"
-	SMTP_Host = "smtp.gmail.com"
-	SMTP_PORT = 587
+	Body_HTML  = "text/html"
+	Body_Plain = "text/plain"
+	SMTP_Host  = "smtp.gmail.com"
+	SMTP_PORT  = 587
 )

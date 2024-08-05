@@ -1,7 +1,7 @@
 package user_controller
 
 import (
-	"chatbox/pkg/review"
+	gin_fake "chatbox/pkg/review"
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"net/http"
@@ -27,9 +27,9 @@ func (u *UserController) LogoutUser() echo.HandlerFunc {
 
 		}
 
-		review.SetCookie(c, "access_token", "", -1, "/", "localhost", false, true)
-		review.SetCookie(c, "refresh_token", "", -1, "/", "localhost", false, true)
-		review.SetCookie(c, "logged_in", "", -1, "/", "localhost", false, false)
+		gin_fake.SetCookie(c, "access_token", "", -1, "/", "localhost", false, true)
+		gin_fake.SetCookie(c, "refresh_token", "", -1, "/", "localhost", false, true)
+		gin_fake.SetCookie(c, "logged_in", "", -1, "/", "localhost", false, false)
 
 		return c.JSON(http.StatusOK, echo.Map{
 			"status": "success",

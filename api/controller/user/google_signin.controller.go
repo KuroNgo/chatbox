@@ -112,9 +112,9 @@ func (u *UserController) GoogleLoginWithUser() echo.HandlerFunc {
 		accessToken := <-accessTokenCh
 		refreshToken := <-refreshTokenCh
 
-		review.SetCookie(c, "access_token", accessToken, u.Database.AccessTokenMaxAge*1000, "/", "localhost", false, true)
-		review.SetCookie(c, "refresh_token", refreshToken, u.Database.AccessTokenMaxAge*1000, "/", "localhost", false, true)
-		review.SetCookie(c, "logged_in", "true", u.Database.AccessTokenMaxAge*1000, "/", "localhost", false, false)
+		gin_fake.SetCookie(c, "access_token", accessToken, u.Database.AccessTokenMaxAge*1000, "/", "localhost", false, true)
+		gin_fake.SetCookie(c, "refresh_token", refreshToken, u.Database.AccessTokenMaxAge*1000, "/", "localhost", false, true)
+		gin_fake.SetCookie(c, "logged_in", "true", u.Database.AccessTokenMaxAge*1000, "/", "localhost", false, false)
 
 		return c.JSON(http.StatusOK, echo.Map{"token": signedToken})
 	}

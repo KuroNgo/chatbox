@@ -47,8 +47,8 @@ func (u *UserController) RefreshToken() echo.HandlerFunc {
 
 		}
 
-		review.SetCookie(c, "access_token", access_token, u.Database.AccessTokenMaxAge*60, "/", "localhost", false, true)
-		review.SetCookie(c, "logged_in", "true", u.Database.AccessTokenMaxAge*60, "/", "localhost", false, false)
+		gin_fake.SetCookie(c, "access_token", access_token, u.Database.AccessTokenMaxAge*60, "/", "localhost", false, true)
+		gin_fake.SetCookie(c, "logged_in", "true", u.Database.AccessTokenMaxAge*60, "/", "localhost", false, false)
 
 		return c.JSON(http.StatusOK, echo.Map{
 			"status":       "success",

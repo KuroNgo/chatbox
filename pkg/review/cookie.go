@@ -1,4 +1,4 @@
-package review
+package gin_fake
 
 import (
 	"github.com/labstack/echo/v4"

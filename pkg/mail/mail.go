@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"crypto/tls"
 	"fmt"
-	"github.com/k3a/html2text"
 	"gopkg.in/gomail.v2"
 	"html/template"
 	"log"
@@ -54,14 +53,14 @@ func SendEmail(data *EmailData, emailTo string, templateName string) error {
 
 	m := gomail.NewMessage()
 
-	m.SetHeader("From", Mailer1)
-	m.SetHeader("To", emailTo)
-	m.SetHeader("Subject", data.Subject)
+	m.SetHeader(From, Mailer1)
+	m.SetHeader(To, emailTo)
+	m.SetHeader(Subject, data.Subject)
 
 	m.SetAddressHeader(Bcc, BCCAdmin3, Admin)
 
-	m.SetBody("text/html", body.String())
-	m.AddAlternative("text/plain", html2text.HTML2Text(body.String()))
+	m.SetBody(Body_Plain, body.String())
+	m.AddAlternative(Body_HTML, body.String())
 
 	d := gomail.NewDialer(SMTP_Host, SMTP_PORT, Mailer1, Password1)
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
