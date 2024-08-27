@@ -7,6 +7,15 @@ import (
 	"net/http"
 )
 
+// LogoutUser godoc
+// @Summary Đăng xuất người dùng
+// @Description API này xóa các cookie liên quan đến phiên làm việc của người dùng và trả về phản hồi thành công.
+// @Tags User
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]interface{} "Thành công"
+// @Failure 401 {object} map[string]interface{} "Unauthorized"
+// @Router /api/user/logout [get]
 func (u *UserController) LogoutUser() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()

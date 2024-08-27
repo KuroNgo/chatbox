@@ -13,6 +13,23 @@ import (
 	"time"
 )
 
+// SignUp godoc
+// @Summary Đăng ký người dùng mới
+// @Description API này cho phép người dùng mới đăng ký tài khoản, bao gồm thông tin cá nhân, mật khẩu và ảnh đại diện.
+// @Tags User
+// @Accept multipart/form-data
+// @Produce json
+// @Param email formData string true "Địa chỉ email của người dùng"
+// @Param full_name formData string true "Tên đầy đủ của người dùng"
+// @Param password formData string true "Mật khẩu của người dùng"
+// @Param avatar_url formData string false "URL của ảnh đại diện người dùng"
+// @Param phone formData string false "Số điện thoại của người dùng"
+// @Param file formData file false "Ảnh đại diện của người dùng"
+// @Success 200 {object} map[string]interface{} "Thành công"
+// @Failure 400 {object} map[string]interface{} "Bad Request"
+// @Failure 403 {object} map[string]interface{} "Forbidden"
+// @Failure 500 {object} map[string]interface{} "Internal Server Error"
+// @Router /api/user/signup [post]
 func (u *UserController) SignUp() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()

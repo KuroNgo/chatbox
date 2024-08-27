@@ -11,6 +11,7 @@ import (
 
 func SetUp(env *bootstrap.Database, timeout time.Duration, db *mongo.Database, echo *echo.Echo) {
 	publicRouter := echo.Group("/api")
+	swaggerRouter := echo.Group("")
 
 	// Middleware
 	publicRouter.Use(
@@ -27,4 +28,5 @@ func SetUp(env *bootstrap.Database, timeout time.Duration, db *mongo.Database, e
 	RoomRouter(env, timeout, db, publicRouter)
 	ActivityRoute(env, timeout, db, publicRouter)
 	MessageRouter(env, timeout, db, publicRouter)
+	SwaggerRouter(swaggerRouter)
 }

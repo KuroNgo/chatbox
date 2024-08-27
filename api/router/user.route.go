@@ -5,7 +5,7 @@ import (
 	"chatbox/api/middlewares"
 	"chatbox/bootstrap"
 	"chatbox/domain"
-	"chatbox/repository"
+	"chatbox/repository/user/repository"
 	"chatbox/usecase"
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -13,7 +13,7 @@ import (
 )
 
 func UserRouter(env *bootstrap.Database, timeout time.Duration, db *mongo.Database, group *echo.Group) {
-	ur := repository.NewUserRepository(db, domain.CollectionUser)
+	ur := user_repository.NewUserRepository(db, domain.CollectionUser)
 	user := &user_controller.UserController{
 		UserUseCase: usecase.NewUserUseCase(ur, timeout),
 		Database:    env,

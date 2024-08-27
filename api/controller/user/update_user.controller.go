@@ -12,6 +12,21 @@ import (
 	"time"
 )
 
+// UpdateUser godoc
+// @Summary Cập nhật thông tin người dùng
+// @Description API này cho phép người dùng đã đăng nhập cập nhật thông tin của mình, bao gồm tên đầy đủ, số điện thoại và ảnh đại diện.
+// @Tags User
+// @Accept multipart/form-data
+// @Produce json
+// @Param full_name formData string true "Tên đầy đủ của người dùng"
+// @Param phone formData string true "Số điện thoại của người dùng"
+// @Param file formData file false "Ảnh đại diện của người dùng"
+// @Success 200 {object} map[string]interface{} "Thành công"
+// @Failure 400 {object} map[string]interface{} "Bad Request"
+// @Failure 401 {object} map[string]interface{} "Unauthorized"
+// @Failure 403 {object} map[string]interface{} "Forbidden"
+// @Failure 500 {object} map[string]interface{} "Internal Server Error"
+// @Router /api/user/update [put]
 func (u *UserController) UpdateUser() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()

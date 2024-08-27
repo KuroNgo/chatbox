@@ -5,7 +5,8 @@ import (
 	"chatbox/api/middlewares"
 	"chatbox/bootstrap"
 	"chatbox/domain"
-	"chatbox/repository"
+	room_repository "chatbox/repository/room/repository"
+	"chatbox/repository/user/repository"
 	"chatbox/usecase"
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -13,8 +14,8 @@ import (
 )
 
 func RoomRouter(env *bootstrap.Database, timeout time.Duration, db *mongo.Database, group *echo.Group) {
-	r := repository.NewRoomRepository(db, domain.CollectionRoom)
-	ur := repository.NewUserRepository(db, domain.CollectionUser)
+	r := room_repository.NewRoomRepository(db, domain.CollectionRoom)
+	ur := user_repository.NewUserRepository(db, domain.CollectionUser)
 
 	room := &room_controller.RoomController{
 		RoomUseCase: usecase.NewRoomUseCase(r, timeout),
@@ -22,7 +23,7 @@ func RoomRouter(env *bootstrap.Database, timeout time.Duration, db *mongo.Databa
 		Database:    env,
 	}
 
-	router := group.Group("/v1/room")
+	router := group.Group("/room")
 	router.Use(middlewares.DeserializeUser())
 	router.GET("/fetch", room.FetchManyRoom())
 	router.GET("/1/fetch", room.FetchOneRoom())

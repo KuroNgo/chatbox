@@ -1,4 +1,4 @@
-package repository
+package room_repository
 
 import (
 	"chatbox/domain"
@@ -12,12 +12,14 @@ import (
 type roomRepository struct {
 	database       *mongo.Database
 	collectionRoom string
+	collectionUser string
 }
 
-func NewRoomRepository(db *mongo.Database, collectionRoom string) domain.IRoomRepository {
+func NewRoomRepository(db *mongo.Database, collectionRoom string, collectionUser string) domain.IRoomRepository {
 	return &roomRepository{
 		database:       db,
 		collectionRoom: collectionRoom,
+		collectionUser: collectionUser,
 	}
 }
 
@@ -99,6 +101,7 @@ func (r roomRepository) FetchOneByName(ctx context.Context, userID primitive.Obj
 
 func (r roomRepository) CreateRoom(ctx context.Context, room domain.Room) error {
 	collectionRoom := r.database.Collection(r.collectionRoom)
+
 	_, err := collectionRoom.InsertOne(ctx, room)
 	return err
 }

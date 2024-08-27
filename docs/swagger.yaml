@@ -1,0 +1,638 @@
+basePath: /api
+definitions:
+  domain.Input:
+    properties:
+      name:
+        example: admin
+        type: string
+    type: object
+  domain.SignIn:
+    properties:
+      email:
+        example: admin@admin.com
+        type: string
+      password:
+        example: "12345"
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a Chathox server for Echo.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Chatbox with Echo
+  version: "1.0"
+paths:
+  /api/activity/fetch:
+    get:
+      consumes:
+      - application/json
+      description: API này trả về danh sách hoạt động dựa trên trang yêu cầu.
+      parameters:
+      - default: "1"
+        description: Trang cần lấy dữ liệu
+        in: query
+        name: page
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thành công
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Lỗi hệ thống
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Lấy danh sách hoạt động
+      tags:
+      - Activity
+  /api/message/delete:
+    delete:
+      consumes:
+      - application/json
+      description: API này xóa một tin nhắn dựa trên ID được cung cấp qua tham số
+        truy vấn.
+      parameters:
+      - description: ID của tin nhắn cần xóa
+        in: query
+        name: _id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thành công
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Lỗi hệ thống
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Xóa một tin nhắn
+      tags:
+      - Message
+  /api/message/fetch:
+    get:
+      consumes:
+      - application/json
+      description: API này trả về nhiều tin nhắn từ một phòng dựa trên ID phòng và
+        ID người dùng.
+      parameters:
+      - description: ID của phòng cần lấy tin nhắn
+        in: query
+        name: room_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thành công
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Lấy nhiều tin nhắn
+      tags:
+      - Message
+  /api/message/ws:
+    get:
+      consumes:
+      - application/json
+      description: API này thiết lập kết nối WebSocket cho việc gửi và nhận tin nhắn
+        trong một phòng cụ thể.
+      parameters:
+      - description: ID của phòng
+        example: '"605c72ef1f1b2c001f9b22a2"'
+        in: query
+        name: room_id
+        required: true
+        type: string
+      - description: ID của người nhận
+        example: '"605c72ef1f1b2c001f9b22a3"'
+        in: query
+        name: to_user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "101":
+          description: Kết nối WebSocket thành công
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Thiết lập kết nối WebSocket
+      tags:
+      - Message
+  /api/room/1/fetch:
+    get:
+      consumes:
+      - application/json
+      description: API này trả về thông tin chi tiết của một phòng dựa trên ID phòng.
+      parameters:
+      - description: ID của phòng cần lấy thông tin
+        example: '"605c72ef1f1b2c001f9b22a2"'
+        in: query
+        name: _id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thành công
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Lấy thông tin phòng theo ID
+      tags:
+      - Room
+  /api/room/create:
+    post:
+      consumes:
+      - application/json
+      description: API này tạo một phòng mới với thông tin phòng từ yêu cầu.
+      parameters:
+      - description: Thông tin phòng cần tạo
+        in: body
+        name: room
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Input'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thành công
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Tạo phòng mới
+      tags:
+      - Room
+  /api/room/delete:
+    delete:
+      consumes:
+      - application/json
+      description: API này xóa một phòng dựa trên ID của phòng và ID của người dùng.
+      parameters:
+      - description: ID của phòng cần xóa
+        example: '"605c72ef1f1b2c001f9b22a2"'
+        in: query
+        name: _id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thành công
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Xóa phòng
+      tags:
+      - Room
+  /api/room/fetch:
+    get:
+      consumes:
+      - application/json
+      description: API này trả về danh sách tất cả các phòng mà người dùng hiện tại
+        có quyền truy cập.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thành công
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Lấy danh sách phòng
+      tags:
+      - Room
+  /api/room/fetch/name:
+    get:
+      consumes:
+      - application/json
+      description: API này trả về thông tin chi tiết của một phòng dựa trên tên phòng.
+      parameters:
+      - description: Tên của phòng cần lấy thông tin
+        example: '"Room1"'
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thành công
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Lấy thông tin phòng theo tên
+      tags:
+      - Room
+  /api/room/update:
+    put:
+      consumes:
+      - application/json
+      description: API này cập nhật thông tin của một phòng dựa trên dữ liệu đầu vào
+        được cung cấp.
+      parameters:
+      - description: Dữ liệu phòng cần cập nhật
+        in: body
+        name: room
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Input'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thành công
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Cập nhật thông tin phòng
+      tags:
+      - Room
+  /api/user/info:
+    get:
+      consumes:
+      - application/json
+      description: API này lấy thông tin của người dùng dựa trên token xác thực được
+        gửi qua cookie.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thành công
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Lấy thông tin người dùng hiện tại
+      tags:
+      - User
+  /api/user/login:
+    post:
+      consumes:
+      - application/json
+      description: API này cho phép người dùng đăng nhập vào hệ thống bằng địa chỉ
+        email và mật khẩu của họ. Nếu đăng nhập thành công, hệ thống sẽ tạo và trả
+        về access token và refresh token.
+      parameters:
+      - description: Thông tin đăng nhập của người dùng
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.SignIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thành công
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Đăng nhập người dùng
+      tags:
+      - User
+  /api/user/logout:
+    get:
+      consumes:
+      - application/json
+      description: API này xóa các cookie liên quan đến phiên làm việc của người dùng
+        và trả về phản hồi thành công.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thành công
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Đăng xuất người dùng
+      tags:
+      - User
+  /api/user/refresh:
+    get:
+      consumes:
+      - application/json
+      description: API này làm mới token truy cập dựa trên token làm mới được gửi
+        qua cookie.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thành công
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Làm mới token truy cập
+      tags:
+      - User
+  /api/user/signup:
+    post:
+      consumes:
+      - multipart/form-data
+      description: API này cho phép người dùng mới đăng ký tài khoản, bao gồm thông
+        tin cá nhân, mật khẩu và ảnh đại diện.
+      parameters:
+      - description: Địa chỉ email của người dùng
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: Tên đầy đủ của người dùng
+        in: formData
+        name: full_name
+        required: true
+        type: string
+      - description: Mật khẩu của người dùng
+        in: formData
+        name: password
+        required: true
+        type: string
+      - description: URL của ảnh đại diện người dùng
+        in: formData
+        name: avatar_url
+        type: string
+      - description: Số điện thoại của người dùng
+        in: formData
+        name: phone
+        type: string
+      - description: Ảnh đại diện của người dùng
+        in: formData
+        name: file
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thành công
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Đăng ký người dùng mới
+      tags:
+      - User
+  /api/user/update:
+    put:
+      consumes:
+      - multipart/form-data
+      description: API này cho phép người dùng đã đăng nhập cập nhật thông tin của
+        mình, bao gồm tên đầy đủ, số điện thoại và ảnh đại diện.
+      parameters:
+      - description: Tên đầy đủ của người dùng
+        in: formData
+        name: full_name
+        required: true
+        type: string
+      - description: Số điện thoại của người dùng
+        in: formData
+        name: phone
+        required: true
+        type: string
+      - description: Ảnh đại diện của người dùng
+        in: formData
+        name: file
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thành công
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Cập nhật thông tin người dùng
+      tags:
+      - User
+swagger: "2.0"

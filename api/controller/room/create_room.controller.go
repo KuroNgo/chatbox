@@ -8,6 +8,19 @@ import (
 	"net/http"
 )
 
+// CreateRoom godoc
+// @Summary Tạo phòng mới
+// @Description API này tạo một phòng mới với thông tin phòng từ yêu cầu.
+// @Tags Room
+// @Accept json
+// @Produce json
+// @Param room body domain.Input true "Thông tin phòng cần tạo"
+// @Success 200 {object} map[string]interface{} "Thành công"
+// @Failure 400 {object} map[string]interface{} "Bad Request"
+// @Failure 401 {object} map[string]interface{} "Unauthorized"
+// @Failure 500 {object} map[string]interface{} "Internal Server Error"
+// @Security ApiKeyAuth
+// @Router /api/room/create [post]
 func (r *RoomController) CreateRoom() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		currentUser := c.Get("currentUser")

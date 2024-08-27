@@ -7,6 +7,18 @@ import (
 	"net/http"
 )
 
+// DeleteOne godoc
+// @Summary Xóa một tin nhắn
+// @Description API này xóa một tin nhắn dựa trên ID được cung cấp qua tham số truy vấn.
+// @Tags Message
+// @Accept json
+// @Produce json
+// @Param _id query string true "ID của tin nhắn cần xóa"
+// @Success 200 {object} map[string]interface{} "Thành công"
+// @Failure 401 {object} map[string]interface{} "Unauthorized"
+// @Failure 500 {object} map[string]interface{} "Lỗi hệ thống"
+// @Security ApiKeyAuth
+// @Router /api/message/delete [delete]
 func (m *MessageController) DeleteOne() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		currentUser := c.Get("currentUser")

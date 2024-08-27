@@ -16,7 +16,7 @@ type Room struct {
 }
 
 type Input struct {
-	Name string `bson:"name" json:"name"`
+	Name string `bson:"name" json:"name" example:"admin"`
 }
 
 type IRoomRepository interface {

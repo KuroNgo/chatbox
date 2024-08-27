@@ -1,4 +1,4 @@
-package repository
+package message_repository
 
 import (
 	"chatbox/domain"
@@ -8,6 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"sync"
 	"time"
 )
 
@@ -26,6 +27,8 @@ func NewMessageRepository(database *mongo.Database, collectionMessage string) do
 var (
 	messagesCache = cache.NewTTL[string, []domain.Message]()
 	messageCache  = cache.NewTTL[string, domain.Message]()
+	wg            sync.WaitGroup
+	mu            sync.Mutex
 )
 
 const timeTL = 5 * time.Minute

@@ -2,6 +2,7 @@ package infrastructor
 
 import (
 	"chatbox/bootstrap"
+	"chatbox/repository/user/data_seeder"
 	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -27,6 +28,12 @@ func NewMongoDatabase(env *bootstrap.Database) *mongo.Client {
 		log.Fatal("error while trying to ping mongo", err)
 	}
 
+	// migration
+	err = Migrations(ctx, client)
+	if err != nil {
+		return nil
+	}
+
 	return client
 }
 
@@ -37,4 +44,14 @@ func CloseMongoDBConnection(client *mongo.Client) {
 	}
 
 	log.Println("Connect to Mongo closed")
+}
+
+func Migrations(ctx context.Context, client *mongo.Client) error {
+	// migration
+	err := data_seeder.SeedUser(ctx, client)
+	if err != nil {
+		return nil
+	}
+
+	return nil
 }

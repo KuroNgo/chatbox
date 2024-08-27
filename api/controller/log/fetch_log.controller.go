@@ -7,6 +7,18 @@ import (
 	"net/http"
 )
 
+// FetchManyActivity godoc
+// @Summary Lấy danh sách hoạt động
+// @Description API này trả về danh sách hoạt động dựa trên trang yêu cầu.
+// @Tags Activity
+// @Accept json
+// @Produce json
+// @Param page query string true "Trang cần lấy dữ liệu" default(1)
+// @Success 200 {object} map[string]interface{} "Thành công"
+// @Failure 401 {object} map[string]interface{} "Unauthorized"
+// @Failure 500 {object} map[string]interface{} "Lỗi hệ thống"
+// @Security ApiKeyAuth
+// @Router /api/activity/fetch [get]
 func (a *ActivityController) FetchManyActivity() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()
@@ -30,7 +42,7 @@ func (a *ActivityController) FetchManyActivity() echo.HandlerFunc {
 
 		page := c.QueryParam("page")
 		if page == "" {
-			page = "golang" // Giá trị mặc định
+			page = "1" // Giá trị mặc định
 		}
 
 		activity, err := a.ActivityUseCase.FetchMany(ctx, page)

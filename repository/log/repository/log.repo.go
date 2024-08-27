@@ -1,4 +1,4 @@
-package repository
+package log_repository
 
 import (
 	"chatbox/domain"
@@ -10,6 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -28,8 +29,11 @@ func NewActivityRepository(db *mongo.Database, collectionActivity string, collec
 }
 
 var (
+	wg           sync.WaitGroup
 	loggingCache = cache.NewTTL[string, []domain.Logging]()
 )
+
+const timeTL = 5 * time.Minute
 
 func (l loggingRepository) CreateOne(ctx context.Context, log domain.Logging) error {
 	collectionActivity := l.database.Collection(l.collectionActivity)

@@ -11,6 +11,19 @@ import (
 
 var upgrade = websocket.Upgrader{}
 
+// Setup godoc
+// @Summary Thiết lập kết nối WebSocket
+// @Description API này thiết lập kết nối WebSocket cho việc gửi và nhận tin nhắn trong một phòng cụ thể.
+// @Tags Message
+// @Accept json
+// @Produce json
+// @Param room_id query string true "ID của phòng" example("605c72ef1f1b2c001f9b22a2")
+// @Param to_user_id query string true "ID của người nhận" example("605c72ef1f1b2c001f9b22a3")
+// @Success 101 {object} map[string]interface{} "Kết nối WebSocket thành công"
+// @Failure 400 {object} map[string]interface{} "Bad Request"
+// @Failure 401 {object} map[string]interface{} "Unauthorized"
+// @Failure 500 {object} map[string]interface{} "Internal Server Error"
+// @Router /api/message/ws [get]
 func (m *MessageController) Setup() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()

@@ -8,6 +8,17 @@ import (
 	"net/http"
 )
 
+// LoginUser godoc
+// @Summary Đăng nhập người dùng
+// @Description API này cho phép người dùng đăng nhập vào hệ thống bằng địa chỉ email và mật khẩu của họ. Nếu đăng nhập thành công, hệ thống sẽ tạo và trả về access token và refresh token.
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param body body domain.SignIn true "Thông tin đăng nhập của người dùng"
+// @Success 200 {object} map[string]interface{} "Thành công"
+// @Failure 400 {object} map[string]interface{} "Bad Request"
+// @Failure 401 {object} map[string]interface{} "Unauthorized"
+// @Router /api/user/login [post]
 func (u *UserController) LoginUser() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()

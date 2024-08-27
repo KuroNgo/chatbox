@@ -6,6 +6,19 @@ import (
 	"net/http"
 )
 
+// FetchMany godoc
+// @Summary Lấy nhiều tin nhắn
+// @Description API này trả về nhiều tin nhắn từ một phòng dựa trên ID phòng và ID người dùng.
+// @Tags Message
+// @Accept json
+// @Produce json
+// @Param room_id query string true "ID của phòng cần lấy tin nhắn"
+// @Success 200 {object} map[string]interface{} "Thành công"
+// @Failure 400 {object} map[string]interface{} "Bad Request"
+// @Failure 401 {object} map[string]interface{} "Unauthorized"
+// @Failure 500 {object} map[string]interface{} "Internal Server Error"
+// @Security ApiKeyAuth
+// @Router /api/message/fetch [get]
 func (m *MessageController) FetchMany() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		currentUser := c.Get("currentUser")

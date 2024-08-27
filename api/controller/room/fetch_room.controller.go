@@ -6,6 +6,17 @@ import (
 	"net/http"
 )
 
+// FetchManyRoom godoc
+// @Summary Lấy danh sách phòng
+// @Description API này trả về danh sách tất cả các phòng mà người dùng hiện tại có quyền truy cập.
+// @Tags Room
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]interface{} "Thành công"
+// @Failure 401 {object} map[string]interface{} "Unauthorized"
+// @Failure 500 {object} map[string]interface{} "Internal Server Error"
+// @Security ApiKeyAuth
+// @Router /api/room/fetch [get]
 func (r *RoomController) FetchManyRoom() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		currentUser := c.Get("currentUser")
@@ -40,6 +51,19 @@ func (r *RoomController) FetchManyRoom() echo.HandlerFunc {
 	}
 }
 
+// FetchOneRoom godoc
+// @Summary Lấy thông tin phòng theo ID
+// @Description API này trả về thông tin chi tiết của một phòng dựa trên ID phòng.
+// @Tags Room
+// @Accept json
+// @Produce json
+// @Param _id query string true "ID của phòng cần lấy thông tin" example("605c72ef1f1b2c001f9b22a2")
+// @Success 200 {object} map[string]interface{} "Thành công"
+// @Failure 400 {object} map[string]interface{} "Bad Request"
+// @Failure 401 {object} map[string]interface{} "Unauthorized"
+// @Failure 500 {object} map[string]interface{} "Internal Server Error"
+// @Security ApiKeyAuth
+// @Router /api/room/1/fetch [get]
 func (r *RoomController) FetchOneRoom() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		currentUser := c.Get("currentUser")
@@ -75,6 +99,19 @@ func (r *RoomController) FetchOneRoom() echo.HandlerFunc {
 	}
 }
 
+// FetchOneByName godoc
+// @Summary Lấy thông tin phòng theo tên
+// @Description API này trả về thông tin chi tiết của một phòng dựa trên tên phòng.
+// @Tags Room
+// @Accept json
+// @Produce json
+// @Param name query string true "Tên của phòng cần lấy thông tin" example("Room1")
+// @Success 200 {object} map[string]interface{} "Thành công"
+// @Failure 400 {object} map[string]interface{} "Bad Request"
+// @Failure 401 {object} map[string]interface{} "Unauthorized"
+// @Failure 500 {object} map[string]interface{} "Internal Server Error"
+// @Security ApiKeyAuth
+// @Router /api/room/fetch/name [get]
 func (r *RoomController) FetchOneByName() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		currentUser := c.Get("currentUser")

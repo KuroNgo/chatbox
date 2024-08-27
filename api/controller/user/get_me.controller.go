@@ -7,6 +7,17 @@ import (
 	"net/http"
 )
 
+// GetMe godoc
+// @Summary Lấy thông tin người dùng hiện tại
+// @Description API này lấy thông tin của người dùng dựa trên token xác thực được gửi qua cookie.
+// @Tags User
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]interface{} "Thành công"
+// @Failure 401 {object} map[string]interface{} "Unauthorized"
+// @Failure 403 {object} map[string]interface{} "Forbidden"
+// @Security ApiKeyAuth
+// @Router /api/user/info [get]
 func (u *UserController) GetMe() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()

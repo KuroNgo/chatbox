@@ -8,6 +8,16 @@ import (
 	"net/http"
 )
 
+// RefreshToken godoc
+// @Summary Làm mới token truy cập
+// @Description API này làm mới token truy cập dựa trên token làm mới được gửi qua cookie.
+// @Tags User
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]interface{} "Thành công"
+// @Failure 403 {object} map[string]interface{} "Forbidden"
+// @Security ApiKeyAuth
+// @Router /api/user/refresh [get]
 func (u *UserController) RefreshToken() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()
