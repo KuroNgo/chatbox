@@ -5,6 +5,7 @@ import (
 	"chatbox/bootstrap"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/rs/zerolog/log"
 	"go.mongodb.org/mongo-driver/mongo"
 	"time"
 )
@@ -13,11 +14,13 @@ func SetUp(env *bootstrap.Database, timeout time.Duration, db *mongo.Database, e
 	publicRouter := echo.Group("/api")
 	swaggerRouter := echo.Group("")
 
+	value := Activity(env, timeout, db)
+
 	// Middleware
 	publicRouter.Use(
 		middlewares.CORSPublic(),
 		middleware.Recover(),
-		middlewares.LoggerMiddleware(),
+		middlewares.LoggerMiddleware(&log.Logger, value),
 	)
 
 	// This is a CORS method for check IP validation

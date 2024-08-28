@@ -14,7 +14,7 @@ import (
 )
 
 func RoomRouter(env *bootstrap.Database, timeout time.Duration, db *mongo.Database, group *echo.Group) {
-	r := room_repository.NewRoomRepository(db, domain.CollectionRoom)
+	r := room_repository.NewRoomRepository(db, domain.CollectionRoom, domain.CollectionUser)
 	ur := user_repository.NewUserRepository(db, domain.CollectionUser)
 
 	room := &room_controller.RoomController{

@@ -27,3 +27,16 @@ func ActivityRoute(env *bootstrap.Database, timeout time.Duration, db *mongo.Dat
 	router.Use(middlewares.DeserializeUser())
 	router.GET("/fetch", activity.FetchManyActivity())
 }
+
+func Activity(env *bootstrap.Database, timeout time.Duration, db *mongo.Database) *log_controller.ActivityController {
+	ac := repository2.NewActivityRepository(db, domain.CollectionLog, domain.CollectionUser)
+	users := user_repository.NewUserRepository(db, domain.CollectionUser)
+
+	activity := &log_controller.ActivityController{
+		ActivityUseCase: usecase.NewActivityUseCase(ac, timeout),
+		UserUseCase:     usecase.NewUserUseCase(users, timeout),
+		Database:        env,
+	}
+
+	return activity
+}
